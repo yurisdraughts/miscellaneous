@@ -42,7 +42,7 @@ void WriteNumber()
     (
         int i = 0, leftIndent = 0;
         i < number.Length;
-        leftIndent += digits[Convert.ToInt32($"{number[i]}")].GetLength(0), i++
+        leftIndent += IdentifyDigit(number[i]).GetLength(0), i++
     )
     {
         WriteDigit(IdentifyDigit(number[i]), leftIndent);
