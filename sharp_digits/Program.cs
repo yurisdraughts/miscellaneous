@@ -1,28 +1,34 @@
 ﻿Console.Clear();
 
-int[][,] digits = {
-    new int[,] {{1,0},{2,0},   {0,1},{3,1},   {0,2},{3,2},   {0,3},{3,3}, {1,4},{2,4}}, //0
-    new int[,] {{3,0},   {2,1},{3,1},   {3,2},   {3,3},   {3,4}}, //1
-    new int[,] {{1,0},{2,0},{3,0},   {0,1},{3,1},   {2,2},   {1,3},   {0,4},{1,4},{2,4},{3,4}}, //2
-    new int[,] {{0,0},{1,0},{2,0},{3,0},   {3,1},   {0,2},{1,2},{2,2},{3,2},   {3,3},   {0,4},{1,4},{2,4},{3,4}}, //3
-    new int[,] {{0,0},{3,0},   {0,1},{3,1},   {0,2},{1,2},{2,2},{3,2},   {3,3},   {3,4}}, //4
-    new int[,] {{0,0},{1,0},{2,0},{3,0},   {0,1},   {0,2},{1,2},{2,2},{3,2},   {3,3},   {0,4},{1,4},{2,4},{3,4}}, //5
-    new int[,] {{0,0},{1,0},{2,0},{3,0},   {0,1},   {0,2},{1,2},{2,2},{3,2},   {0,3},{3,3},   {0,4},{1,4},{2,4},{3,4}}, //6
-    new int[,] {{0,0},{1,0},{2,0},{3,0},   {3,1},   {2,2},   {1,3},   {0,4}}, //7
-    new int[,] {{0,0},{1,0},{2,0},{3,0},   {0,1},{3,1},   {0,2},{1,2},{2,2},{3,2},   {0,3},{3,3},   {0,4},{1,4},{2,4},{3,4}}, //8
-    new int[,] {{0,0},{1,0},{2,0},{3,0},   {0,1},{3,1},   {0,2},{1,2},{2,2},{3,2},   {3,3},   {0,4},{1,4},{2,4},{3,4}}, //9
+bool[][,] digits = {
+    new bool[5,4] {{false,true,true,false},{true,false,false,true},{true,false,false,true},{true,false,false,true},{false,true,true,false}}, //0
+    new bool[5,4] {{false,false,false,true},{false,false,true,true},{false,false,false,true},{false,false,false,true},{false,false,false,true}}, //1
+    new bool[5,4] {{false,true,true,true},{true,false,false,true},{false,false,true,false},{false,true,false,false},{true,true,true,true}}, //2
+    new bool[5,4] {{true,true,true,true},{false,false,false,true},{true,true,true,true},{false,false,false,true},{true,true,true,true}}, //3
+    new bool[5,4] {{true,false,false,true},{true,false,false,true},{true,true,true,true},{false,false,false,true},{false,false,false,true}}, //4
+    new bool[5,4] {{true,true,true,true},{true,false,false,false},{true,true,true,true},{false,false,false,true},{true,true,true,true}}, //5
+    new bool[5,4] {{true,true,true,true},{true,false,false,false},{true,true,true,true},{true,false,false,true},{true,true,true,true}}, //6
+    new bool[5,4] {{true,true,true,true},{false,false,false,true},{false,false,true,false},{false,true,false,false},{true,false,false,false}}, //7
+    new bool[5,4] {{true,true,true,true},{true,false,false,true},{true,true,true,true},{true,false,false,true},{true,true,true,true}}, //8
+    new bool[5,4] {{true,true,true,true},{true,false,false,true},{true,true,true,true},{false,false,false,true},{true,true,true,true}}, //9
 };
 
-void WriteDigit(int[,] array, int leftIndent, int topIndent = 1)
+void WriteDigit(bool[,] array, int leftIndent, int topIndent = 2)
 {
     for(int i = 0; i < array.GetLength(0); i++)
     {
-        Console.SetCursorPosition(array[i,0] + leftIndent, array[i,1] + topIndent);
-        Console.Write("#");
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+            if(array[i,j])
+            {
+                Console.SetCursorPosition(j + leftIndent, i + topIndent);
+                Console.Write("#");
+            }
+        }
     }
 }
 
-int[,] IdentifyDigit(char digit)
+bool[,] IdentifyDigit(char digit)
 {
     return digits[Convert.ToInt32($"{digit}")];
 }
@@ -31,12 +37,15 @@ void WriteNumber()
 {
     Console.Write("Введите натуральное число: ");
     string number = Console.ReadLine();
-    int leftIndent = 0;
 
-    for(int i = 0; i < number.Length; i++)
+    for
+    (
+        int i = 0, leftIndent = 0;
+        i < number.Length;
+        leftIndent += digits[Convert.ToInt32($"{number[i]}")].GetLength(0), i++
+    )
     {
         WriteDigit(IdentifyDigit(number[i]), leftIndent);
-        leftIndent += 5;
     }
 }
 
